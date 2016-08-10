@@ -1,0 +1,56 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>background sync | PWA</title>
+  <link rel="manifest" href="/assets/manifest.json">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="css/pure.min.css" rel="stylesheet">
+  <link href="css/styles.css" rel="stylesheet">
+</head>
+<body>
+<a href="index.html">main</a>
+
+<h1>Serviceworker background sync</h1>
+
+<a class="pure-button" href="5-background-sync.html">Reload</a>
+<button class="pure-button pure-button-primary" type="button" id="queue">Queue item to sync</button>
+
+
+<pre id="console"></pre>
+
+
+<script src="js/tools.js"></script>
+<script src="/assets/localforage.min.js"></script>
+<script>
+
+  localforage.setDriver(localforage.INDEXEDDB);
+
+  $('#queue').addEventListener('click', function () {
+    // Or we can use Promises:
+    localforage.setItem('' + random(9000), 'To process.')
+      .then(function (value) {
+        return localforage.keys();
+      })
+      .then(function (keys)  {
+        debug(`Queued 1 item, ${keys.length} total`);
+      });
+  });
+
+  // Make sure browser support serviceworker and one is not already active.
+  if (navigator.serviceWorker) {
+    // Register the ServiceWorker
+    navigator.serviceWorker.register('/serviceworker.js');
+    navigator.serviceWorker.ready
+      .then(function (reg) {
+        return reg.sync.register('pwasync');
+      })
+      .then(function () {
+        debug('Registered pwasync');
+      });
+    navigator.serviceWorker.onmessage = debug;
+  }
+</script>
+</body>
+</html>
+

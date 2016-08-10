@@ -23,3 +23,5 @@ is the only domain that chrome will allow to run serviceworkers without https.
 
 Service workers are not chrome-only but chrome provide the best tools so far for
 debugging and developing. 
+
+`#D1E751,#FFFFFF,#000000,#4DBCE9,#26ADE4,#D1E751,#FFFFFF,#000000`

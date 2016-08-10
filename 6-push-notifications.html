@@ -1,0 +1,54 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>push notifications | PWA</title>
+  <link rel="manifest" href="/assets/manifest.json">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="css/pure.min.css" rel="stylesheet">
+  <link href="css/styles.css" rel="stylesheet">
+</head>
+<body>
+<a href="index.html">main</a>
+
+<h1>Serviceworker push notifications</h1>
+
+<a class="pure-button" href="6-push-notifications.html">Reload</a>
+
+
+<pre id="console"></pre>
+
+
+<script src="js/tools.js"></script>
+<script>
+  // Make sure browser support serviceworker and one is not already active.
+  if (navigator.serviceWorker) {
+    // Register the ServiceWorker
+    Notification.requestPermission();
+
+    navigator.serviceWorker.register('/serviceworker.js');
+    navigator.serviceWorker.ready.then(function(reg) {
+      reg.pushManager.subscribe({userVisibleOnly: true})
+        .then(function(subscription) {
+          console.log(subscription);
+        })
+        .catch(function(e) {
+          if (Notification.permission === 'denied') {
+            // The user denied the notification permission which
+            // means we failed to subscribe and the user will need
+            // to manually change the notification permission to
+            // subscribe to push messages
+            debug('Permission for Notifications was denied', 'warn');
+
+          }
+          else {
+            debug('Unable to subscribe to push.', 'warn');
+            debug(e, 'warn');
+          }
+        });
+    });
+  }
+</script>
+</body>
+</html>
+
