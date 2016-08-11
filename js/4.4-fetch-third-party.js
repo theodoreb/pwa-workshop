@@ -16,5 +16,15 @@ self.addEventListener('fetch', function (event) {
   if (isGet && isDifferentHost) {
     console.log('Process Third party request to', request.url);
 
+    // 1) serve third party asset from cache.
+    var res = caches.match(request);
+
+    // 2) if not in cache, fetch it and add it to the cache.
+    // 3) make a 500ms timeout promise.
+    // 3) use that promise to prevent the fetch if it takes more than 500ms.
+    //    You will need to use Promise.race([])
+
+
+    event.respondWith(res);
   }
 });
