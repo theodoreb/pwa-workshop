@@ -24,8 +24,7 @@
   //behaviors.failProms = Promise.reject();
 
   // Handle behaviors functions with dependencies.
-  behaviors.intercept = Promise
-    .all([behaviors.dragNDrop, behaviors.loadImage])
+  behaviors.intercept = Promise.all([behaviors.dragNDrop, behaviors.loadImage])
     .then(function (timers) {
       debug('');
       return new Promise(function (resolve, reject) {
